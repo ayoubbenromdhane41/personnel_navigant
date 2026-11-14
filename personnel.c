@@ -1,9 +1,15 @@
+#include <stdio.h>
+#include <string.h>
+#include "personnel.h"
+
+
+
 int ajouterpersonnel(char fperso[],personnel p){
 FILE *f=NULL;
 int r=0;
 f=fopen(fperso,"a");
 if(f!=NULL){
-   fprintf(f,"%s %s %s %s %s %s %s %s %d %d %d %d\n",p.matricule,p.nom,p.prenom,p.fonction,p.base_attache,p.tel,p.mail,p.adresse,p.ddn.jour,p.ddn.mois,p.ddn.annee,p.sexe);
+ fprintf(f,"%s %s %s %s %s %s %s %s %d %d %d %d\n",p.matricule,p.nom,p.prenom,p.fonction,p.base_attache,p.tel,p.mail,p.adresse,p.ddn.jour,p.ddn.mois,p.ddn.annee,p.sexe);
    r=1;
 }
 fclose(f);
@@ -22,7 +28,7 @@ if((f!=NULL)&&(g!=NULL)){
 		fprintf(g,"%s %s %s %s %s %s %s %s %d %d %d %d\n",p.matricule,p.nom,p.prenom,p.fonction,p.base_attache,p.tel,p.mail,p.adresse,p.ddn.jour,p.ddn.mois,p.ddn.annee,p.sexe);
 		r=0;
 	}else{
-		fprintf(f,"%s %s %s %s %s %s %s %s %d %d %d %d\n",n.matricule,n.nom,n.prenom,n.fonction,n.base_attache,n.tel,n.mail,n.adresse,n.ddn.jour,n.ddn.mois,n.ddn.annee,n.sexe)
+		fprintf(f,"%s %s %s %s %s %s %s %s %d %d %d %d\n",n.matricule,n.nom,n.prenom,n.fonction,n.base_attache,n.tel,n.mail,n.adresse,n.ddn.jour,n.ddn.mois,n.ddn.annee,n.sexe);
 	}
    }  
 fclose(g);
@@ -78,7 +84,7 @@ FILE *g=fopen("tmp.txt","w");
 if((f!=NULL)&&(g!=NULL)){
    while(fscanf(f,"%s %s %d %d %d %d\n",l.membre,l.qualif,&l.d.jour,&l.d.mois,&l.d.annee,&l.alerte)!=EOF){
    	if(strcmp(l.membre,mem)!=0){
-		fprintf(f,"%s %s %d %d %d %d\n",l.membre,l.qualif,l.d.jour,l.d.mois,l.d.annee,p.l.alerte);
+		fprintf(f,"%s %s %d %d %d %d\n",l.membre,l.qualif,l.d.jour,l.d.mois,l.d.annee,l.alerte);
 		r=0;
 	}
    }   
@@ -99,7 +105,6 @@ FILE *f=fopen(fperso,"r");
 if(f!=NULL){
    while(fscanf(f,"%s %s %s %s %s %s %s %s %d %d %d %d",p.matricule,p.nom,p.prenom,p.fonction,p.base_attache,p.tel,p.mail,p.adresse,&p.ddn.jour,&p.ddn.mois,&p.ddn.annee,&p.sexe)!=EOF){
        if((strcmp(p.nom,nom)==0)||(strcmp(p.fonction,fon)==0)||(strcmp(p.base_attache,batt)==0)){
-       	..............
        	r=0;
         }
    }
