@@ -3,16 +3,26 @@
  
 #include <stdio.h>
 #include <string.h>
- 
+typedef struct{
+char id_vol[50];
+}vols;
 typedef struct{
     int jour;
     int mois;
     int annee;
 }date;
 typedef struct{
+    char id_vol[50];
+    date dd;
+    int pilote;
+    int hotesse;
+    int copilote;
+}avol;
+typedef struct{
     char matricule[50];
     char id_vol[50];
     date dd;
+    char fonction[50];
     
 }affectation;
 
@@ -34,17 +44,17 @@ typedef struct{
     char mail[100];
     char adresse[100];
     date ddn;
-    int sexe[2];
+    int sexe;
 }personnel; 
 
-int ajouterpersonnel(char fperso[],personnel p);
-int modifirpersonnel(char fperso[],char mat[],personnel n);
+int ajouterpersonnel(char *fperso,personnel p);
+int modifirpersonnel(char *fperso,char mat[],personnel n);
 int supppersonnel(char *fperso,char mat[]);
 int ajouterl(char *flicence,licence l);
 int supprimerl(char *flicence,char mem[]);
-int rechercherpersonnel(char fperso[],char nom[],char fon[],char batt[]);
-int disponible(char *fperso,personnel p);
-int recherchervol(char *vols,char *fperso,char poste[],date d);
-int affecter(char *faffecter,char *fperso,char mat[]);
-
+personnel rechercherpersonnel(char *fperso,char nom[],char fon[],char batt[]);
+int disponible(char *faffecter,char mat[],date d);
+avol recherchervol(char *avols ,char *faffecter,char *fvols,char poste[],date d);
+int affecter(char *faffecter,char *fperso,char mat[],char idvol[],date d);
+int ajoutervols(char *fvols,vols v);
 #endif
