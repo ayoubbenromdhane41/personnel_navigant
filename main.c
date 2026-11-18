@@ -7,7 +7,7 @@ int main(){
     personnel p3;
     avol av;
     date d;
-    d.jour=18;
+    d.jour=19;
     d.mois=11;
     d.annee=2026;
     licence l;
@@ -62,7 +62,7 @@ int main(){
     else {
     printf("trouve : %s\n", l3.membre);
     }
-    r=affecter("affectes.txt","perso.txt","M005","V0010",d);
+    //r=affecter("affectes.txt","perso.txt","M005","V0010",d);
     printf("%d",r);
     av=recherchervol("avol.txt","affectes.txt","fvols.txt","pilote",d);
     vols v={"V002"};

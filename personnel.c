@@ -216,59 +216,44 @@ strcpy(p.matricule,"0");
 }
 return p;
 }
-/*
-avol recherchervol(char *avols ,char *faffecter,char *fvols,char poste[],date d){
-   affectation a;
-   avol av;
-   vols v;
-   int tp=1;
-   FILE *vf=fopen(fvols, "r");
-   FILE *vaf=fopen(avols, "w");
-   FILE *af=fopen(faffecter, "r");
-   if((vaf!=NULL)&&(vf!=NULL)){
-        while (fscanf(vf, "%s ",v.id_vol)!=EOF){
-        	av.pilote=1;
-        	av.hotesse=1;
-        	av.copilote=1;
-        	FILE *af=fopen(faffecter, "r");
-        if (af != NULL){
-        while (fscanf(af, "%s %s %d %d %d %s",a.matricule, a.id_vol, &a.dd.jour, &a.dd.mois, &a.dd.annee,a.fonction)!=EOF){
-        	if((strcmp(v.id_vol,a.id_vol)==0
-        	)&&(a.dd.jour == d.jour)&&(a.dd.mois == d.mois) &&(a.dd.annee == d.annee)){
-        		if((strcmp(a.fonction,"pilote")==0)){
-        		     av.pilote=av.pilote-1;
-        		}
-        		if((strcmp(a.fonction,"hotesse")==0)){
-        		     av.hotesse--;
-        		}
-        		if((strcmp(a.fonction,"copilote")==0)){
-        		     av.copilote--;
-        		}
-        		strcpy(av.id_vol,a.id_vol);
-        		av.dd.jour=d.jour;
-        		av.dd.mois=d.mois;
-        		av.dd.annee=d.annee;
-        		fprintf(vaf,"%s %d %d %d %d %d %d\n",av.id_vol,av.dd.jour,av.dd.mois,av.dd.annee,av.pilote,av.hotesse,av.copilote);
-        	
+avol recherchervol(char *avols, char *faffecter, char *fvols, char poste[], date d) {
+    affectation a;
+    avol av;
+    vols v;
+    
+    FILE *vf = fopen(fvols, "r");
+    FILE *vaf = fopen(avols, "w");
+    if (vaf != NULL && vf != NULL) {
+        while (fscanf(vf, "%s", v.id_vol) != EOF) {
+            int poste_disponible = 1;
+            FILE *af = fopen(faffecter, "r");
+            if (af != NULL) {
+                while (fscanf(af, "%s %s %d %d %d %s", a.matricule, a.id_vol, &a.dd.jour, &a.dd.mois, &a.dd.annee, a.fonction) != EOF) {
+                 
+                    if (strcmp(v.id_vol, a.id_vol) == 0 && 
+                        a.dd.jour == d.jour && a.dd.mois == d.mois && a.dd.annee == d.annee) {
+
+                        if (strcmp(a.fonction, poste) == 0) {
+                            poste_disponible = 0;
+                        }
+                    }
+                }
+                fclose(af);
+            }
+            if (poste_disponible == 1) {
+                strcpy(av.id_vol, v.id_vol);
+                av.dd.jour = d.jour;
+                av.dd.mois = d.mois;
+                av.dd.annee = d.annee;
+                fprintf(vaf, "%s %d %d %d\n", av.id_vol, av.dd.jour, av.dd.mois, av.dd.annee);
+            }
         }
-        }
-        }
-        while(fscanf(vaf,"%s %d %d %d %d %d %d\n",av.id_vol,&av.dd.jour,&av.dd.mois,&av.dd.annee,&av.pilote,&av.hotesse,&av.copilote)!=EOF){
-        	if(strcmp(v.id_vol,av.id_vol)==0){
-        		tp=0;
-        	}
-        	else{
-        		fprintf(vaf,"%s %d %d %d %d %d %d\n",av.id_vol,av.dd.jour,av.dd.mois,av.dd.annee,av.pilote,av.hotesse,av.copilote);
-        	}	
-        }
-        }
-        
+        fclose(vf);
         fclose(vaf);
-        fclose(af);
-        }
-        return av;   	
-}*/
-avol recherchervol(char *avols ,char *faffecter,char *fvols,char poste[],date d){
+    }
+    return av;
+}
+/*avol recherchervol(char *avols ,char *faffecter,char *fvols,char poste[],date d){
    affectation a;
    avol av;
    vols v;
@@ -328,7 +313,7 @@ avol recherchervol(char *avols ,char *faffecter,char *fvols,char poste[],date d)
         }
         return av;
         }
-
+*/
 int affecter(char *faffecter,char *fperso,char mat[],char idvol[],date d){
    affectation a;
    personnel p;

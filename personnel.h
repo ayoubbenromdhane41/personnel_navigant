@@ -14,9 +14,6 @@ typedef struct{
 typedef struct{
     char id_vol[50];
     date dd;
-    int pilote;
-    int hotesse;
-    int copilote;
 }avol;
 typedef struct{
     char matricule[50];
