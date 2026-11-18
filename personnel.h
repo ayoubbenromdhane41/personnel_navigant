@@ -52,9 +52,11 @@ int modifirpersonnel(char *fperso,char mat[],personnel n);
 int supppersonnel(char *fperso,char mat[]);
 int ajouterl(char *flicence,licence l);
 int supprimerl(char *flicence,char mem[]);
+licence rechercherl(char *flicence,char mem[]);
 personnel rechercherpersonnel(char *fperso,char nom[],char fon[],char batt[]);
 int disponible(char *faffecter,char mat[],date d);
 avol recherchervol(char *avols ,char *faffecter,char *fvols,char poste[],date d);
 int affecter(char *faffecter,char *fperso,char mat[],char idvol[],date d);
 int ajoutervols(char *fvols,vols v);
+int matricule_existe(char fperso[], char mat[]);
 #endif

@@ -1,14 +1,42 @@
 #include <stdio.h>
 #include <string.h>
 #include "personnel.h"
-
-
+//int controle()
+int matricule_existe(char fperso[], char mat[]){
+    personnel p;
+    int trouve = 0;
+    FILE *f = fopen(fperso, "r");
+    if (f != NULL){
+        while (!trouve && fscanf(f, "%s %s %s %s %s %s %s %s %d %d %d %d",
+            p.matricule, p.nom, p.prenom, p.fonction, p.base_attache,
+            p.tel, p.mail, p.adresse,
+            &p.ddn.jour, &p.ddn.mois, &p.ddn.annee, &p.sexe) == 12){
+            if ((strcmp(p.matricule, mat) == 0))
+                trouve = 1;
+        }
+        fclose(f);
+    }
+    return trouve;
+}
 
 int ajouterpersonnel(char *fperso,personnel p){
 FILE *f=NULL;
 int r=0;
 f=fopen(fperso,"a");
 if(f!=NULL){
+    if(matricule_existe(fperso,p.matricule)==1){
+    	return -1;
+    	}
+    if(strcmp(p.fonction,"pilote")!=0&&(strcmp(p.fonction,"copilote")!=0)&&(strcmp(p.fonction,"hotesse")!=0)){
+   	return -2;
+   	}
+    if(strlen(p.tel)!=8){
+    	return -3;
+    	}
+    if((p.sexe>2)||(p.sexe<0)){
+        return -4;
+    }
+    
     fprintf(f,"%s %s %s %s %s %s %s %s %d %d %d %d\n",p.matricule,p.nom,p.prenom,p.fonction,p.base_attache,p.tel,p.mail,p.adresse,p.ddn.jour,p.ddn.mois,p.ddn.annee,p.sexe);
    r=1;
 }
@@ -35,9 +63,10 @@ FILE *f=fopen(fperso,"r");
 FILE *g=fopen("tmp.txt","w");
 if((f!=NULL)&&(g!=NULL)){
    while(fscanf(f,"%s %s %s %s %s %s %s %s %d %d %d %d",p.matricule,p.nom,p.prenom,p.fonction,p.base_attache,p.tel,p.mail,p.adresse,&p.ddn.jour,&p.ddn.mois,&p.ddn.annee,&p.sexe)!=EOF){
+   
    	if(strcmp(p.matricule,mat)==0){
 		r=1;
-		fprintf(g,"%s %s %s %s %s %s %s %s %d %d %d %d\n",n.matricule,n.nom,n.prenom,n.fonction,n.base_attache,n.tel,n.mail,n.adresse,n.ddn.jour,n.ddn.mois,n.ddn.annee,n.sexe);
+		fprintf(g,"%s %s %s %s %s %s %s %s %d %d %d %d\n",p.matricule,n.nom,n.prenom,n.fonction,n.base_attache,n.tel,n.mail,n.adresse,n.ddn.jour,n.ddn.mois,n.ddn.annee,n.sexe);
 	
 	}else{
 		fprintf(g,"%s %s %s %s %s %s %s %s %d %d %d %d\n",p.matricule,p.nom,p.prenom,p.fonction,p.base_attache,p.tel,p.mail,p.adresse,p.ddn.jour,p.ddn.mois,p.ddn.annee,p.sexe);
@@ -113,6 +142,23 @@ rename("tmp.txt",flicence);
 
 return r;
 }	
+licence rechercherl(char *flicence,char mem[]){
+licence l;
+int r=0;
+FILE *f=fopen(flicence,"r");
+if(f!=NULL){
+   while((r==0)&&(fscanf(f,"%s %s %d %d %d %d\n",l.membre,l.qualif,&l.d.jour,&l.d.mois,&l.d.annee,&l.alerte)!=EOF)){
+   	if(strcmp(l.membre,mem)==0){
+   		r=1;
+        }
+   }
+fclose(f);
+if(r==0){
+strcpy(l.membre,"0");
+}
+}
+return l;
+}
 
 
 personnel rechercherpersonnel(char fperso[],char nom[],char fon[],char batt[]){
@@ -127,13 +173,12 @@ if(f!=NULL){
    }
 fclose(f);
 if(r==0){
-
 strcpy(p.matricule,"0");
 }
 }
 return p;
 }
-
+/*
 avol recherchervol(char *avols ,char *faffecter,char *fvols,char poste[],date d){
    affectation a;
    avol av;
@@ -150,7 +195,8 @@ avol recherchervol(char *avols ,char *faffecter,char *fvols,char poste[],date d)
         	FILE *af=fopen(faffecter, "r");
         if (af != NULL){
         while (fscanf(af, "%s %s %d %d %d %s",a.matricule, a.id_vol, &a.dd.jour, &a.dd.mois, &a.dd.annee,a.fonction)!=EOF){
-        	if(strcmp(v.id_vol,a.id_vol)==0){
+        	if((strcmp(v.id_vol,a.id_vol)==0
+        	)&&(a.dd.jour == d.jour)&&(a.dd.mois == d.mois) &&(a.dd.annee == d.annee)){
         		if((strcmp(a.fonction,"pilote")==0)){
         		     av.pilote=av.pilote-1;
         		}
@@ -169,14 +215,81 @@ avol recherchervol(char *avols ,char *faffecter,char *fvols,char poste[],date d)
         }
         }
         }
+        while(fscanf(vaf,"%s %d %d %d %d %d %d\n",av.id_vol,&av.dd.jour,&av.dd.mois,&av.dd.annee,&av.pilote,&av.hotesse,&av.copilote)!=EOF){
+        	if(strcmp(v.id_vol,av.id_vol)==0){
+        		tp=0;
+        	}
+        	else{
+        		fprintf(vaf,"%s %d %d %d %d %d %d\n",av.id_vol,av.dd.jour,av.dd.mois,av.dd.annee,av.pilote,av.hotesse,av.copilote);
+        	}	
+        }
         }
         
         fclose(vaf);
         fclose(af);
         }
         return av;   	
-}
-
+}*/
+avol recherchervol(char *avols ,char *faffecter,char *fvols,char poste[],date d){
+   affectation a;
+   avol av;
+   vols v;
+   int tp=1;
+   FILE *vf=fopen(fvols, "r");
+   FILE *vaf=fopen(avols, "w");
+   if((vaf!=NULL)&&(vf!=NULL)){
+        while (fscanf(vf, "%s ",v.id_vol)!=EOF){
+        	av.pilote=1;
+        	av.hotesse=1;
+        	av.copilote=1;
+        	av.dd.jour=d.jour;
+        	av.dd.mois=d.mois;
+        	av.dd.annee=d.annee;
+        	FILE *af=fopen(faffecter, "r");
+   	if (af != NULL){
+        while (fscanf(af, "%s %s %d %d %d %s",a.matricule, a.id_vol, &a.dd.jour, &a.dd.mois, &a.dd.annee,a.fonction)!=EOF){
+        	strcpy(av.id_vol,a.id_vol);
+        	
+        	if(((strcmp(v.id_vol,a.id_vol)==0))&&(a.dd.jour==d.jour)&&(a.dd.mois == d.mois) &&(a.dd.annee == d.annee)){
+        		tp=1;
+        		strcpy(av.id_vol,a.id_vol);
+        		if((strcmp(a.fonction,"pilote")==0)){
+        		     av.pilote=av.pilote-1;
+        		}
+        		if((strcmp(a.fonction,"hotesse")==0)){
+        		     av.hotesse--;
+        		}
+        		if((strcmp(a.fonction,"copilote")==0)){
+        		     av.copilote--;
+        		}
+        	if((strcmp(poste,"pilote")==0)&&(av.pilote==1)){
+        		fprintf(vaf,"%s %d %d %d %d %d %d\n",av.id_vol,av.dd.jour,av.dd.mois,av.dd.annee,av.pilote,av.hotesse,av.copilote);
+        		tp=0;	
+        		}
+        	if((strcmp(poste,"hotesse")==0)&&(av.hotesse==1)){
+        		fprintf(vaf,"%s %d %d %d %d %d %d\n",av.id_vol,av.dd.jour,av.dd.mois,av.dd.annee,av.pilote,av.hotesse,av.copilote);
+        		tp=0;	
+        		}
+        	if((strcmp(poste,"copilote")==0)&&(av.copilote==1)){
+        		fprintf(vaf,"%s %d %d %d %d %d %d\n",av.id_vol,av.dd.jour,av.dd.mois,av.dd.annee,av.pilote,av.hotesse,av.copilote);
+        		tp=0;
+        		}
+        	}
+        	}
+        if(tp==1){
+        strcpy(av.id_vol,v.id_vol);
+	fprintf(vaf,"%s %d %d %d %d %d %d\n",av.id_vol,av.dd.jour,av.dd.mois,av.dd.annee,av.pilote,av.hotesse,av.copilote);
+        	}	
+        	
+        	fclose(af);
+        
+        	}
+ }
+ fclose(vaf);
+        fclose(vf);
+        }
+        return av;
+        }
 
 int affecter(char *faffecter,char *fperso,char mat[],char idvol[],date d){
    affectation a;
@@ -184,9 +297,8 @@ int affecter(char *faffecter,char *fperso,char mat[],char idvol[],date d){
    FILE *pf=fopen(fperso,"r");
    FILE *f=fopen(faffecter, "a");
    int r=0;
-   
    if((f!=NULL)&&(pf!=NULL)){
-   if(disponible(faffecter,mat,d)!=0){
+   if(disponible(faffecter,mat,d)==0){
    	return -1;
    	}
    	while(fscanf(pf,"%s %s %s %s %s %s %s %s %d %d %d %d",p.matricule,p.nom,p.prenom,p.fonction,p.base_attache,p.tel,p.mail,p.adresse,&p.ddn.jour,&p.ddn.mois,&p.ddn.annee,&p.sexe)!=EOF){
@@ -216,8 +328,7 @@ int disponible(char *faffecter,char mat[],date d){
     if (f != NULL){
         while (dispo == 1 && fscanf(f, "%s %s %d %d %d %s",
             a.matricule, a.id_vol, &a.dd.jour, &a.dd.mois, &a.dd.annee,a.fonction) !=EOF){
-            if ((strcmp(a.matricule, mat) == 0 )&& (a.dd.jour == d.jour)
-                && (a.dd.mois == d.mois) && (a.dd.annee == d.annee)){
+            if ((strcmp(a.matricule, mat) == 0 )&&(a.dd.jour == d.jour)&&(a.dd.mois == d.mois) &&(a.dd.annee == d.annee)){
                 dispo = 0;
             }
         }
