@@ -19,16 +19,16 @@ int main(){
     strcpy(p.fonction, "pilote");
     strcpy(p.base_attache, "tunis");
     strcpy(p.tel, "20311456");
-    strcpy(p.mail, "ali@mail.com");
+    strcpy(p.mail, "alibfgc@gmail.com");
     strcpy(p.adresse, "Tunis");
     p.ddn.jour = 2;
     p.ddn.mois = 07;
     p.ddn.annee = 1999;
     p.sexe=1;
     
-    //r= ajouterpersonnel("perso.txt", p);
-    
-    r = modifirpersonnel("perso.txt", "M005", p);
+    r= ajouterpersonnel("perso.txt", p);
+    printf("%d",r);
+    //r = modifirpersonnel("perso.txt", "M005", p);
     strcpy(n.matricule, "M007");
     strcpy(n.nom, "ayoub");
     strcpy(n.prenom, "Ben");
@@ -43,7 +43,6 @@ int main(){
     n.sexe= 0;
     //r = supppersonnel("perso.txt", "M007");
     //r = modifirpersonnel("perso.txt", "M005", n);
-    //printf("%d",r);
     //p3=rechercherpersonnel("perso.txt","ayoub","c","libya");
    /* if(strcmp(p3.matricule,"0")==0){
     	printf("introvable");

@@ -1,7 +1,40 @@
 #include <stdio.h>
 #include <string.h>
 #include "personnel.h"
-//int controle()
+int verifier_nom(char ch[]) {
+int i;
+char c;
+if (strlen(ch) == 0)
+return 0;
+for (i = 0; ch[i] != '\0'; i++) {
+c = ch[i];
+if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
+c == '-' || c == '*' || c == '_'))
+return 0;
+}
+return 1;
+}
+int verifier_telephone(char tel[]) {
+int i, chiffres = 0;
+if (strlen(tel) == 0)
+return 0;
+for (i=0; tel[i] != '\0'; i++) {
+if (tel[i] < '0' || tel[i] > '9')
+return 0;
+chiffres++;
+}
+return (chiffres >= 8 && chiffres <= 15);
+}
+int verifier_email(char mail[]) {
+char at = strchr(mail, '@');
+if (strlen(mail) == 0 || strchr(mail, ' ') != NULL){
+	return 0;
+}
+if (at == NULL || at == mail || (at + 1) == '\0'){
+	return 0;
+}
+return 1;
+}
 int matricule_existe(char fperso[], char mat[]){
     personnel p;
     int trouve = 0;
@@ -30,13 +63,18 @@ if(f!=NULL){
     if(strcmp(p.fonction,"pilote")!=0&&(strcmp(p.fonction,"copilote")!=0)&&(strcmp(p.fonction,"hotesse")!=0)){
    	return -2;
    	}
-    if(strlen(p.tel)!=8){
+    if(verifier_telephone(p.tel)==0){
     	return -3;
     	}
-    if((p.sexe>2)||(p.sexe<0)){
+    if(!verifier_email(p.mail)){
         return -4;
     }
-    
+    if(!verifier_nom(p.nom)){
+    	return -5;
+    	}
+    if(!verifier_nom(p.prenom)){
+    	return -6;
+    	}
     fprintf(f,"%s %s %s %s %s %s %s %s %d %d %d %d\n",p.matricule,p.nom,p.prenom,p.fonction,p.base_attache,p.tel,p.mail,p.adresse,p.ddn.jour,p.ddn.mois,p.ddn.annee,p.sexe);
    r=1;
 }
